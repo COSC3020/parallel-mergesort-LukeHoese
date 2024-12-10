@@ -1,4 +1,4 @@
-function parallelMS(arr, done) {
+process.on('message', function(m) {function parallelMS(arr, done) {
     const fileSync = require('tmp').fileSync;
     const writeFileSync = require('fs').writeFileSync;
     const fork = require('child_process').fork;
@@ -30,7 +30,6 @@ function parallelMS(arr, done) {
             }
         }
 
-        // return our merged array
         return merged;
     }
 
@@ -73,7 +72,6 @@ function parallelMS(arr, done) {
       leftWorker.kill();
     }).send([left]);
 
-    // essentially same as on left, just using main thread
     parallelMS(right, function(rightSort) {
       console.log("Right worker: " + rightSort);
       rightResult = rightSort;
@@ -85,6 +83,4 @@ function parallelMS(arr, done) {
         else done(merged);
       }
     });
-}
-  
-parallelMS([3,5,9,3,4,6,7,2,1,8,3,3,5,2,3,9], console.log);
+}parallelMS(m[0], m[1]);});

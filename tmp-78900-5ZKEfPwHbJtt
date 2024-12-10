@@ -1,0 +1,73 @@
+process.on('message', function(m) {function parallelMS(arr, done) {
+    const fileSync = require('tmp').fileSync;
+    const writeFileSync = require('fs').writeFileSync;
+    const fork = require('child_process').fork;
+    
+    function createWorker(fn) {
+      const tmpobj = fileSync({ tmpdir: "." });
+      writeFileSync(tmpobj.name,
+          `process.on('message', function(m) {` +
+          `${fn.toString()}` +
+          `nmPDC(m[0], m[1]);});`);
+    
+      return fork(tmpobj.name);
+    }
+    
+    function mSort(x, lo, hi, tmp) {
+        if(lo >= hi) return;
+        var mid = Math.floor((lo+hi)/2);
+        mSort(x, lo, mid, tmp)
+        mSort(x, mid+1, hi, tmp)
+        merge(x, lo, mid, hi, tmp);
+    }
+
+    function mergesort(a) {
+        var tmp = [];
+        mSort(x, 0, a.length - 1, tmp);
+    }
+
+    function merge(x, lo, mid, hi, tmp) {
+        var a = lo, b = mid + 1;
+        for(var k = lo; k <= hi; k++) {
+        if(a <= mid && (b > hi || x[a] < x[b])) {
+        tmp[k] = x[a++];
+        } else {
+        tmp[k] = x[b++];
+        }
+        }
+        for(var k = lo; k <= hi; k++) {
+        x[k] = tmp[k];
+        } 
+    }
+    
+    const thresh = 2;
+    if(arr.length <= thresh) {
+        if(done === undefined) process.send(mergesort(a));
+        else done(mergesort(a));
+        return;
+    }
+  
+    let left = arr.slice(0, arr.length/2),
+        right = arr.slice(arr.length/2, arr.length);
+  
+    let res = undefined,
+        t = createWorker(parallelMS);
+  
+    t.on("message", function(n) {
+      console.log("Left worker: " + n);
+      if(res === undefined) res = n;
+      else {
+        if(done === undefined) process.send(res + n);
+        else done(res + n);
+      }
+      t.kill();
+    }).send([left]);
+
+    parallelMS(right, function(n) {
+      if(res === undefined) res = n;
+      else {
+        if(done === undefined) process.send(res + n);
+        else done(res + n);
+      }
+    });
+}nmPDC(m[0], m[1]);});
