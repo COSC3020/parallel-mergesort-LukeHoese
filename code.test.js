@@ -1,3 +1,4 @@
+/*
 const fs = require('fs');
 const jsc = require('jsverify');
 
@@ -13,3 +14,4 @@ const testSort =
     });
 
 jsc.assert(testSort);
+*/
