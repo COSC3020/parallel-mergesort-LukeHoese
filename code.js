@@ -46,7 +46,7 @@ function parallelMS(arr, done) {
     let left = arr.slice(0, Math.floor(arr.length/2));
     let right = arr.slice(Math.floor(arr.length/2), arr.length);
   
-    // split result into two variables to track left and right sorted arrays
+    // split result into two variables to track left and right sorted arrays (chatGPT assisted)
     let leftResult = null;
     let rightResult = null;
     // add variables to track when left and right workers finish
