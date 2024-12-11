@@ -1,8 +1,0 @@
-process.on('message', function(m) {function parallelMS(arr, done) {
-        if (!arr || !Array.isArray(arr)) {
-            console.error("Input array is undefined or not an array");
-            return;
-        }
-    
-        // rest of the function logic
-    }parallelMS(m[0], m[1]);});
