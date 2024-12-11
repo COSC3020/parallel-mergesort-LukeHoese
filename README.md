@@ -19,3 +19,4 @@ I certify that I have listed all sources used to complete this exercise, includi
 What is the span of the parallel program, in terms of worst-case $\Theta$? Hint:
 It may help to consider the DAG of the parallel program.
 
+From my understanding span is the longest path on the DAG, aka the longest length of parallel calls that have to wait on the previous call to be completed. It is similar in structure to a recursion tree for this problem. We are splitting our data in half at each point, giving us a depth, and thus worst case span for our parallel program, of $\Theta$(log(n))
